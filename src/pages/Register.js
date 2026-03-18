@@ -19,7 +19,7 @@ function Register() {
         }
       );
       alert("Registered Successfully");
-      navigate("/login"); 
+      navigate("/"); 
     } catch (err) {
       console.error(err);
       alert("Registration Failed: " + err.response?.data?.detail || err.message);
