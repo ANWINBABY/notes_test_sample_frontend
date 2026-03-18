@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import API from "../api/api";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 function Register() {
@@ -8,21 +8,42 @@ function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await API.post("register/", form);
-    alert("Registered Successfully");
-    navigate("/login");
+    try {
+      const res = await axios.post(
+        "https://notes-management-3rhb.onrender.com/api/register/",
+        form,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      alert("Registered Successfully");
+      navigate("/login"); 
+    } catch (err) {
+      console.error(err);
+      alert("Registration Failed: " + err.response?.data?.detail || err.message);
+    }
   };
 
   return (
     <form onSubmit={handleSubmit}>
       <h2>Register</h2>
-      <input placeholder="Username" onChange={(e)=>setForm({...form, username:e.target.value})} />
-      <br></br>
-      <input type="password" placeholder="Password" onChange={(e)=>setForm({...form, password:e.target.value})} />
-      <br></br>
-      <button>Register</button>
-
-      <button onClick={() => navigate("/")}>
+      <input
+        placeholder="Username"
+        value={form.username}
+        onChange={(e) => setForm({ ...form, username: e.target.value })}
+      />
+      <br />
+      <input
+        type="password"
+        placeholder="Password"
+        value={form.password}
+        onChange={(e) => setForm({ ...form, password: e.target.value })}
+      />
+      <br />
+      <button type="submit">Register</button>
+      <button type="button" onClick={() => navigate("/login")}>
         Already have account? Login
       </button>
     </form>
