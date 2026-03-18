@@ -8,25 +8,41 @@ function Register() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await API.post("register/", form);
-    alert("Registered Successfully");
-    navigate("/login");
+    try {
+      await API.post("register/", form);
+      alert("Registered Successfully");
+      navigate("/login");
+    } catch (error) {
+      console.error(error);
+      alert("Registration failed.");
+    }
   };
 
   return (
     <form onSubmit={handleSubmit}>
       <h2>Register</h2>
-      <input placeholder="Username" onChange={(e)=>setForm({...form, username:e.target.value})} />
-      <br></br>
-      <input type="password" placeholder="Password" onChange={(e)=>setForm({...form, password:e.target.value})} />
-      <br></br>
-      <button>Register</button>
 
-      <button onClick={() => navigate("/")}>
+      <input
+        placeholder="Username"
+        value={form.username}
+        onChange={(e) => setForm({ ...form, username: e.target.value })}
+      />
+      <br />
+
+      <input
+        type="password"
+        placeholder="Password"
+        value={form.password}
+        onChange={(e) => setForm({ ...form, password: e.target.value })}
+      />
+      <br />
+
+      <button type="submit">Register</button>
+      <button type="button" onClick={() => navigate("/")}>
         Already have account? Login
       </button>
     </form>
   );
 }
 
-export default Register; 
+export default Register;
